@@ -15,9 +15,9 @@ app.use('/blogs', require('./routes/blogRouter'));
 app.use('/projects', require('./routes/projectRouter'));
 app.use('/image-upload', require('./routes/imageRouter'));
 
-app.use('/', swaggerUi.serve, swaggerUi.setup(require('swagger-jsdoc')(require('./swagger-spec.json'))));
-
 app.use(express.static(require('path').join(__dirname, 'public')));
+
+app.use('/', swaggerUi.serve, swaggerUi.setup(require('swagger-jsdoc')(require('./swagger-spec.json'))));
 
 require('mongoose').connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
