@@ -1,20 +1,32 @@
+require('dotenv').config();
 var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var swaggerUi = require("swagger-ui-express");
 
 var app = express();
 
-app.use(logger('dev'));
+app.use(require('morgan')('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('cookie-parser')());
+app.use(require('passport').initialize());
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users', require('./routes/userRouter'));
+app.use('/blogs', require('./routes/blogRouter'));
+app.use('/projects', require('./routes/projectRouter'));
+app.use('/image-upload', require('./routes/imageRouter'));
+
+app.use('/', swaggerUi.serve, swaggerUi.setup(require('swagger-jsdoc')(require('./swagger-spec.json'))));
+
+app.use(express.static(require('path').join(__dirname, 'public')));
+
+require('mongoose').connect(process.env.MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false
+}).then(
+  db => console.log('Connected to the database server -', db.connections[0].name),
+  err => console.log(err)
+);
 
 module.exports = app;

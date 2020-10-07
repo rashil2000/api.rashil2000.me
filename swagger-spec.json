@@ -1,0 +1,41 @@
+{
+  "definition": {
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Personal Website Backend",
+      "description": "Serves blogs, projects and static file uploads (images) used in my website.",
+      "contact": {
+        "name": "Rashil Gandhi",
+        "url": "https://rashil2000.me",
+        "email": "mail@rashil2000.me"
+      },
+      "tags": [
+        {
+          "name": "Blogs",
+          "description": "API to manage blogs"
+        },
+        {
+          "name": "Projects",
+          "description": "API to manage projects"
+        },
+        {
+          "name": "Images",
+          "description": "API to manage static images"
+        },
+        {
+          "name": "Users",
+          "description": "API to manage authentication"
+        }
+      ]
+    }
+  },
+  "apis": [
+    "./models/users.js",
+    "./models/blogs.js",
+    "./models/projects.js",
+    "./routes/userRouter.js",
+    "./routes/blogRouter.js",
+    "./routes/projectRouter.js",
+    "./routes/imageRouter.js"
+  ]
+}
