@@ -124,17 +124,17 @@ userRouter.post('/auth-refresh', cors.corsWithOptions, (req, res, next) => {
       req.body = { username: req.body.username, password: decrypted };
       passport.authenticate('local', (err, user, info) => {
         if (err) return next(err);
-        if (!user) res.status(401).json({ success: false, status: 'Refresh Unsuccessful!', info });
+        if (!user) res.status(401).json({ success: false, status: 'Refresh Unsuccessful!', refreshStatus: false, info });
 
         req.logIn(user, err => {
-          if (err) res.status(401).json({ success: false, status: 'Refresh Unsuccessful!', err: 'Could not refresh log in!' });
+          if (err) res.status(401).json({ success: false, status: 'Refresh Unsuccessful!', refreshStatus: false, err: 'Could not refresh log in!' });
 
           var token = authenticate.getToken({ _id: req.user._id });
-          res.status(200).json({ success: true, status: 'Refresh Successful!', token });
+          res.status(200).json({ success: true, status: 'Refresh Successful!', refreshStatus: true, token });
         });
       })(req, res, next);
     } else
-      return res.status(200).json({ status: 'JWT valid!', success: true, user });
+      return res.status(200).json({ success: true, status: 'JWT valid!', refreshStatus: false, user });
   })(req, res);
 });
 
