@@ -57,7 +57,7 @@ projectRouter.use(express.json());
 
 projectRouter.route('/')
   .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
-  .get(cors.cors, async (req, res, next) => {
+  .get(cors.corsWithOptions, async (req, res, next) => {
     try {
       const projects = await Projects.find(req.query)
       res.status(200).json(projects);
@@ -140,7 +140,7 @@ projectRouter.route('/')
 
 projectRouter.route('/:slug')
   .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
-  .get(cors.cors, async (req, res, next) => {
+  .get(cors.corsWithOptions, async (req, res, next) => {
     try {
       const project = await Projects.findOne({ slug: req.params.slug })
       res.status(200).json(project);

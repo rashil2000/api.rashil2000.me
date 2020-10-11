@@ -57,7 +57,7 @@ blogRouter.use(express.json());
 
 blogRouter.route('/')
   .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
-  .get(cors.cors, async (req, res, next) => {
+  .get(cors.corsWithOptions, async (req, res, next) => {
     try {
       const blogs = await Blogs.find(req.query)
       res.status(200).json(blogs);
@@ -140,7 +140,7 @@ blogRouter.route('/')
 
 blogRouter.route('/:slug')
   .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
-  .get(cors.cors, async (req, res, next) => {
+  .get(cors.corsWithOptions, async (req, res, next) => {
     try {
       const blog = await Blogs.findOne({ slug: req.params.slug })
       res.status(200).json(blog);
