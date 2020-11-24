@@ -61,4 +61,4 @@ package-lock.json
 .next
 
 # Static assets
-public/images/
+public/

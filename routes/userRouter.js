@@ -1,12 +1,10 @@
-require('dotenv').config();
 var express = require('express');
 var passport = require('passport');
 var crypto = require("crypto");
 var userRouter = express.Router();
 
-var Users = require('../models/users');
 var authenticate = require('../authenticate');
-var cors = require('./cors');
+var cors = require('../cors');
 
 const cryptoKey = crypto.scryptSync(process.env.SECRET_KEY, 'salt', 24);
 const cryptoIv = Buffer.alloc(16, 0);
@@ -14,14 +12,14 @@ const cryptoIv = Buffer.alloc(16, 0);
 userRouter.use(express.json());
 userRouter.options('*', cors.corsWithOptions, (req, res) => { res.sendStatus(200); });
 
-/* userRouter.get('/', cors.corsWithOptions, authenticate.verifyUser, async (req, res, next) => {
+/* var Users = require('../models/users');
+userRouter.get('/', cors.corsWithOptions, authenticate.verifyUser, async (req, res, next) => {
   try {
     const users = await Users.find({});
     res.status(200).json(users);
   } catch (err) { next(err); }
-}); */
-
-/* userRouter.post('/signup', cors.corsWithOptions, (req, res, next) => {
+});
+userRouter.post('/signup', cors.corsWithOptions, (req, res, next) => {
   Users.register(new Users({ username: req.body.username }),
     req.body.password, (err, user) => {
       if (err) res.status(500).json({ err });

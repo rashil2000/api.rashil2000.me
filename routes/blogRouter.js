@@ -2,7 +2,7 @@ const express = require('express');
 
 const Blogs = require('../models/blogs');
 const authenticate = require('../authenticate');
-const cors = require('./cors');
+const cors = require('../cors');
 
 const blogRouter = express.Router();
 

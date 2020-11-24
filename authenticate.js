@@ -1,4 +1,3 @@
-require('dotenv').config();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var JwtStrategy = require('passport-jwt').Strategy;
@@ -17,7 +16,6 @@ exports.jwtPassport = passport.use(new JwtStrategy({
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.SECRET_KEY
 }, (jwt_payload, done) => {
-  console.log("JWT payload: ", jwt_payload);
   Users.findOne({ _id: jwt_payload._id }, (err, user) => {
     if (err)
       return done(err, false);

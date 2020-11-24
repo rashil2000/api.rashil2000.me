@@ -2,7 +2,8 @@ var fs = require('fs');
 const express = require('express');
 const multer = require('multer');
 
-const cors = require('./cors');
+const authenticate = require('../authenticate');
+const cors = require('../cors');
 
 const uploadRouter = express.Router();
 
@@ -65,6 +66,6 @@ const upload = multer({
 
 uploadRouter.route('/')
   .options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
-  .post(cors.corsWithOptions, require('../authenticate').verifyUser, upload.single('imageFile'), (req, res) => res.status(200).json(req.file));
+  .post(cors.corsWithOptions, authenticate.verifyUser, upload.single('imageFile'), (req, res) => res.status(200).json(req.file));
 
 module.exports = uploadRouter;
