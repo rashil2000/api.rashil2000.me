@@ -10,6 +10,7 @@
 - Uses [MongoDB](https://www.mongodb.com/), a NoSQL database for modern applications, along with [Mongoose](https://mongoosejs.com/) for object data modeling.
 - Implements local authentication using [Passport](http://www.passportjs.org/).
 - Handles static file uploads using the [Multer](https://github.com/expressjs/multer) middleware.
+- Generates [directory-tree](https://github.com/mihneadb/node-directory-tree) for static assets.
 
 Documentation has been generated through [Postman](https://www.postman.com/), which can be viewed upon visiting the link above. The different API routes can be seen there. Models and routes have also been defined using the [OpenAPI](https://www.openapis.org/) specification through [Swagger](https://swagger.io/), which live on [api.rashil2000.me/swagger-docs](https://api.rashil2000.me/swagger-docs/).
 

@@ -31,10 +31,10 @@ const upload = multer({
 /**
  * @swagger
  * path:
- *  /image-upload:
- *    post:
- *      summary: Posts an image that can be served
- *      tags: [Images]
+ *  /assets:
+ *    get:
+ *      summary: Lists the directory tree of all public assets
+ *      tags: [Assets]
  *      security:
  *        - bearerAuth: []
  *      parameters:
@@ -44,7 +44,31 @@ const upload = multer({
  *          required: true
  *          schema:
  *            type: string
- *          description: The location where the image would be stored.
+ *          description: The location of the asset(s).
+ *          examples:
+ *            blogs:
+ *              summary: "Folder: 'blogs', Sub-folder: 'first-blog'"
+ *              value: blogs%2Ffirst-blog
+ *            projects:
+ *              summary: "Folder: 'projects', Sub-folder 'first-project'"
+ *              value: blogs%2Ffirst-project
+ *      responses:
+ *        "200":
+ *          description: The directory tree JSON.
+ *          content: application/json
+ *    post:
+ *      summary: Posts an asset that can be served
+ *      tags: [Assets]
+ *      security:
+ *        - bearerAuth: []
+ *      parameters:
+ *        - $ref: '#/components/parameters/authParam'
+ *        - in: query
+ *          name: location
+ *          required: true
+ *          schema:
+ *            type: string
+ *          description: The location where the asset would be stored.
  *          examples:
  *            blogs:
  *              summary: "Folder: 'blogs', Sub-folder: 'first-blog'"
@@ -58,12 +82,36 @@ const upload = multer({
  *            schema:
  *              type: object
  *              properties:
- *                imageFile:
+ *                uploadedFile:
  *                  type: string
  *                  format: binary
  *      responses:
  *        "200":
- *          description: The posted image details.
+ *          description: The posted asset details.
+ *    delete:
+ *      summary: Recursively deletes public assets
+ *      tags: [Assets]
+ *      security:
+ *        - bearerAuth: []
+ *      parameters:
+ *        - $ref: '#/components/parameters/authParam'
+ *        - in: query
+ *          name: location
+ *          required: true
+ *          schema:
+ *            type: string
+ *          description: The location of the asset(s).
+ *          examples:
+ *            blogs:
+ *              summary: "Folder: 'blogs', Sub-folder: 'first-blog'"
+ *              value: blogs%2Ffirst-blog
+ *            projects:
+ *              summary: "Folder: 'projects', Sub-folder 'first-project'"
+ *              value: blogs%2Ffirst-project
+ *      responses:
+ *        "200":
+ *          description: The specified location and success status.
+ *          content: application/json
  */
 
 assetRouter.route('/')
