@@ -13,7 +13,7 @@ app.use(require('passport').initialize());
 app.use('/users', require('./routes/userRouter'));
 app.use('/blogs', require('./routes/blogRouter'));
 app.use('/projects', require('./routes/projectRouter'));
-app.use('/image-upload', require('./routes/imageRouter'));
+app.use('/assets', require('./routes/assetRouter'));
 
 app.use(express.static(require('path').join(__dirname, 'public')));
 
