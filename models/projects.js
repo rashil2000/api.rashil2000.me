@@ -29,12 +29,16 @@
  *          github:
  *            type: string
  *            description: The GitHub identifier of project.
+ *          preview:
+ *            type: string
+ *            description: Optional URL for link preview image.
  *        example:
  *           title: My first Project
  *           description: How I started development.
  *           content: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
  *           slug: my-first-project
  *           github: test-user/test-repo
+ *           preview: https://api.rashil2000.me/images/projects/my-first-project/preview.png
  */
 
 const mongoose = require('mongoose');
@@ -61,6 +65,9 @@ const projectSchema = new mongoose.Schema({
   github: {
     type: String,
     required: true
+  },
+  preview: {
+    type: String
   }
 });
 

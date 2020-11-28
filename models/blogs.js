@@ -29,12 +29,16 @@
  *          date:
  *            type: date
  *            description: The date of blog creation.
+ *          preview:
+ *            type: string
+ *            description: Optional URL for link preview image.
  *        example:
  *           title: My first Blog
  *           description: How I started my journey.
  *           content: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis diam quis massa eleifend vehicula ultricies finibus turpis. Etiam sollicitudin efficitur auctor.
  *           slug: my-first-blog
  *           date: 2020-10-06T19:17:30.148Z
+ *           preview: https://api.rashil2000.me/images/blogs/my-first-blog/preview.png
  */
 
 const mongoose = require('mongoose');
@@ -61,6 +65,9 @@ const blogSchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true
+  },
+  preview: {
+    type: String
   }
 });
 

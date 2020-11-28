@@ -4,6 +4,7 @@ var swaggerUi = require("swagger-ui-express");
 
 var app = express();
 
+app.set('json spaces', 2);
 app.use(require('morgan')('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
