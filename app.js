@@ -1,6 +1,5 @@
 require('dotenv').config();
 var express = require('express');
-var swaggerUi = require("swagger-ui-express");
 
 var app = express();
 
@@ -17,8 +16,6 @@ app.use('/projects', require('./routes/projectRouter'));
 app.use('/assets', require('./routes/assetRouter'));
 
 app.use(express.static(require('path').join(__dirname, 'public')));
-
-app.use('/swagger-docs', swaggerUi.serve, swaggerUi.setup(require('./swagger-spec.json')));
 app.get('/', (req, res) => res.status(301).redirect(process.env.DOC_URL));
 
 require('mongoose').connect(process.env.MONGO_URL, {

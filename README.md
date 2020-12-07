@@ -12,6 +12,6 @@
 - Handles static file uploads using the [Multer](https://github.com/expressjs/multer) middleware.
 - Generates [directory-tree](https://github.com/mihneadb/node-directory-tree) for static assets.
 
-Documentation has been generated through [Postman](https://www.postman.com/), which can be viewed upon visiting the link above. The different API routes can be seen there. Models and routes have also been defined using the [OpenAPI](https://www.openapis.org/) specification through [Swagger](https://swagger.io/), which live on [api.rashil2000.me/swagger-docs](https://api.rashil2000.me/swagger-docs/).
+Documentation has been generated through [Postman](https://www.postman.com/), which can be viewed upon visiting the link above. The different API routes can be seen there.
 
 The API endpoints and database are utilized on [rashil2000.me](https://rashil2000.me/) - my personal website written in [Next.js](https://nextjs.org) using React - whose source code can be found [here](https://github.com/rashil2000/rashil2000.me/).
