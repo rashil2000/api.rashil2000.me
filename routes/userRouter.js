@@ -37,33 +37,6 @@ userRouter.post('/signup', cors.corsWithOptions, (req, res, next) => {
     });
 }); */
 
-
-/**
- * @swagger
- * path:
- *  /users/login:
- *    post:
- *      summary: Logs in the user
- *      tags: [Users]
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                username:
- *                  type: string
- *                password:
- *                  type: string
- *              required:
- *                - username
- *                - password
- *      responses:
- *        "200":
- *          description: Authentication token and encrypted credentials. This token is valid only for 3600 seconds.
- */
-
 userRouter.post('/login', cors.corsWithOptions, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) return next(err);
@@ -79,37 +52,6 @@ userRouter.post('/login', cors.corsWithOptions, (req, res, next) => {
     });
   })(req, res, next);
 });
-
-
-/**
- * @swagger
- * path:
- *  /users/auth-refresh:
- *    post:
- *      summary: Refreshes JWT if it's no longer valid
- *      tags: [Users]
- *      requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *              properties:
- *                username:
- *                  type: string
- *                encryptedpassword:
- *                  type: string
- *              required:
- *                - username
- *                - encryptedpassword
- *      security:
- *        - bearerAuth: []
- *      parameters:
- *        - $ref: '#/components/parameters/authParam'
- *      responses:
- *        "200":
- *          description: The refreshed JWT.
- */
 
 userRouter.post('/auth-refresh', cors.corsWithOptions, (req, res, next) => {
   const decipher = crypto.createDecipheriv("aes-192-cbc", cryptoKey, cryptoIv);

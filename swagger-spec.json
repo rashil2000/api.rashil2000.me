@@ -1,41 +1,766 @@
 {
-  "definition": {
-    "openapi": "3.0.0",
-    "info": {
-      "title": "Personal Website Backend",
-      "description": "Serves blogs, projects and static assets used in my website.",
-      "contact": {
-        "name": "Rashil Gandhi",
-        "url": "https://rashil2000.me",
-        "email": "mail@rashil2000.me"
-      },
-      "tags": [
-        {
-          "name": "Blogs",
-          "description": "API to manage blogs"
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Personal Website Backend",
+    "description": "Serves blogs, projects and static assets used in my website.",
+    "contact": {
+      "name": "Rashil Gandhi",
+      "url": "https://rashil2000.me",
+      "email": "mail@rashil2000.me"
+    },
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Blogs",
+      "description": "API to manage blogs"
+    },
+    {
+      "name": "Projects",
+      "description": "API to manage projects"
+    },
+    {
+      "name": "Assets",
+      "description": "API to manage static assets"
+    },
+    {
+      "name": "Users",
+      "description": "API to manage authentication"
+    }
+  ],
+  "paths": {
+    "/users/login": {
+      "post": {
+        "summary": "Logs in the user",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              }
+            }
+          }
         },
-        {
-          "name": "Projects",
-          "description": "API to manage projects"
-        },
-        {
-          "name": "Assets",
-          "description": "API to manage static assets"
-        },
-        {
-          "name": "Users",
-          "description": "API to manage authentication"
+        "responses": {
+          "200": {
+            "description": "Authentication token and encrypted credentials. This token is valid only for 3600 seconds."
+          }
         }
-      ]
+      }
+    },
+    "/users/auth-refresh": {
+      "post": {
+        "summary": "Refreshes JWT if it's no longer valid",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "encryptedpassword": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "encryptedpassword"
+                ]
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/authParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The refreshed JWT."
+          }
+        }
+      }
+    },
+    "/blogs": {
+      "get": {
+        "summary": "Lists all the blogs",
+        "tags": [
+          "Blogs"
+        ],
+        "responses": {
+          "200": {
+            "description": "The array of blogs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Blog"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new blog",
+        "tags": [
+          "Blogs"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/authParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Blog"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The created blog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Blog"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes all the blogs",
+        "tags": [
+          "Blogs"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/authParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete was successful."
+          }
+        }
+      }
+    },
+    "/blogs/{slug}": {
+      "get": {
+        "summary": "Gets a blog by slug",
+        "tags": [
+          "Blogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The blog slug"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The blog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Blog"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Updates a blog by slug",
+        "tags": [
+          "Blogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The blog slug"
+          },
+          {
+            "$ref": "#/components/parameters/authParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Blog"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update was successful."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a blog by slug",
+        "tags": [
+          "Blogs"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The blog slug"
+          },
+          {
+            "$ref": "#/components/parameters/authParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete was successful."
+          }
+        }
+      }
+    },
+    "/projects": {
+      "get": {
+        "summary": "Lists all the projects",
+        "tags": [
+          "Projects"
+        ],
+        "responses": {
+          "200": {
+            "description": "The array of projects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a new project",
+        "tags": [
+          "Projects"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Project"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/authParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The created project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes all the projects",
+        "tags": [
+          "Projects"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/authParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete was successful."
+          }
+        }
+      }
+    },
+    "/projects/{slug}": {
+      "get": {
+        "summary": "Gets a project by slug",
+        "tags": [
+          "Projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The project slug"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Updates a project by slug",
+        "tags": [
+          "Projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The project slug"
+          },
+          {
+            "$ref": "#/components/parameters/authParam"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Project"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update was successful."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a project by slug",
+        "tags": [
+          "Projects"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The project slug"
+          },
+          {
+            "$ref": "#/components/parameters/authParam"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete was successful."
+          }
+        }
+      }
+    },
+    "/assets": {
+      "get": {
+        "summary": "Lists the directory tree of all public assets",
+        "tags": [
+          "Assets"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/authParam"
+          },
+          {
+            "in": "query",
+            "name": "location",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The location of the asset(s).",
+            "examples": {
+              "blogs": {
+                "summary": "Folder: 'blogs', Sub-folder: 'first-blog'",
+                "value": "blogs%2Ffirst-blog"
+              },
+              "projects": {
+                "summary": "Folder: 'projects', Sub-folder 'first-project'",
+                "value": "blogs%2Ffirst-project"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The directory tree JSON.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Posts an asset that can be served",
+        "tags": [
+          "Assets"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/authParam"
+          },
+          {
+            "in": "query",
+            "name": "location",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The location where the asset would be stored.",
+            "examples": {
+              "blogs": {
+                "summary": "Folder: 'blogs', Sub-folder: 'first-blog'",
+                "value": "blogs%2Ffirst-blog"
+              },
+              "projects": {
+                "summary": "Folder: 'projects', Sub-folder 'first-project'",
+                "value": "blogs%2Ffirst-project"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uploadedFile": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The posted asset details."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Recursively deletes public assets",
+        "tags": [
+          "Assets"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/authParam"
+          },
+          {
+            "in": "query",
+            "name": "location",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The location of the asset(s).",
+            "examples": {
+              "blogs": {
+                "summary": "Folder: 'blogs', Sub-folder: 'first-blog'",
+                "value": "blogs%2Ffirst-blog"
+              },
+              "projects": {
+                "summary": "Folder: 'projects', Sub-folder 'first-project'",
+                "value": "blogs%2Ffirst-project"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The specified location and success status.",
+            "content": "application/json"
+          }
+        }
+      }
     }
   },
-  "apis": [
-    "./models/users.js",
-    "./models/blogs.js",
-    "./models/projects.js",
-    "./routes/userRouter.js",
-    "./routes/blogRouter.js",
-    "./routes/projectRouter.js",
-    "./routes/assetRouter.js"
-  ]
+  "components": {
+    "parameters": {
+      "authParam": {
+        "in": "header",
+        "name": "Authorization",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "example": "bearer <JSONWebToken>"
+      }
+    },
+    "schemas": {
+      "Blog": {
+        "type": "object",
+        "required": [
+          "title",
+          "description",
+          "slug",
+          "date",
+          "content"
+        ],
+        "properties": {
+          "id": {
+            "type": "ObjectID",
+            "description": "The auto-generated id of the blog."
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the blog."
+          },
+          "description": {
+            "type": "string",
+            "description": "A one line summary of the blog."
+          },
+          "content": {
+            "type": "string",
+            "description": "The blog itself."
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique URL identifier."
+          },
+          "date": {
+            "type": "date",
+            "description": "The date of blog creation."
+          },
+          "preview": {
+            "type": "string",
+            "description": "Optional URL for link preview image."
+          }
+        },
+        "example": {
+          "title": "My first Blog",
+          "description": "How I started my journey.",
+          "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis diam quis massa eleifend vehicula ultricies finibus turpis. Etiam sollicitudin efficitur auctor.",
+          "slug": "my-first-blog",
+          "date": "2020-10-06T19:17:30.148Z",
+          "preview": "https://api.rashil2000.me/images/blogs/my-first-blog/preview.png"
+        }
+      },
+      "Project": {
+        "type": "object",
+        "required": [
+          "title",
+          "description",
+          "slug",
+          "github",
+          "content"
+        ],
+        "properties": {
+          "id": {
+            "type": "ObjectID",
+            "description": "The auto-generated id of the project."
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the project."
+          },
+          "description": {
+            "type": "string",
+            "description": "A one line summary of the project."
+          },
+          "content": {
+            "type": "string",
+            "description": "The details of the project."
+          },
+          "slug": {
+            "type": "string",
+            "description": "Unique URL identifier."
+          },
+          "github": {
+            "type": "string",
+            "description": "The GitHub identifier of project."
+          },
+          "preview": {
+            "type": "string",
+            "description": "Optional URL for link preview image."
+          }
+        },
+        "example": {
+          "title": "My first Project",
+          "description": "How I started development.",
+          "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "slug": "my-first-project",
+          "github": "test-user/test-repo",
+          "preview": "https://api.rashil2000.me/images/projects/my-first-project/preview.png"
+        }
+      },
+      "FileObject": {
+        "type": "object",
+        "required": [
+          "path",
+          "name",
+          "size",
+          "type",
+          "extension"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "The path of the file starting from the given location parameter."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the file in the filesystem."
+          },
+          "size": {
+            "type": "number",
+            "description": "The size of the file in bytes."
+          },
+          "type": {
+            "type": "string",
+            "value": "file"
+          },
+          "extension": {
+            "type": "string",
+            "description": "The extension of the file."
+          }
+        },
+        "example": {
+          "path": "photos/winter/january/ski.png",
+          "name": "ski.png",
+          "size": 100,
+          "type": "file",
+          "extension": ".png"
+        }
+      },
+      "DirectoryObject": {
+        "type": "object",
+        "required": [
+          "path",
+          "name",
+          "size",
+          "type",
+          "children"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "The path of the directory starting from the given location parameter."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the directory in the filesystem."
+          },
+          "size": {
+            "type": "number",
+            "description": "The size of the directory in bytes."
+          },
+          "type": {
+            "type": "string",
+            "value": "directory"
+          },
+          "children": {
+            "type": "array",
+            "description": "The contents of the directory.",
+            "items": {
+              "$ref": "#/components/schemas/AssetObject"
+            }
+          }
+        },
+        "example": {
+          "path": "photos/winter/january",
+          "name": "january",
+          "size": 0,
+          "type": "directory",
+          "children": []
+        }
+      },
+      "AssetObject": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/FileObject"
+          },
+          {
+            "$ref": "#/components/schemas/DirectoryObject"
+          }
+        ]
+      }
+    }
+  }
 }

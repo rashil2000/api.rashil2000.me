@@ -18,7 +18,7 @@ app.use('/assets', require('./routes/assetRouter'));
 
 app.use(express.static(require('path').join(__dirname, 'public')));
 
-app.use('/swagger-docs', swaggerUi.serve, swaggerUi.setup(require('swagger-jsdoc')(require('./swagger-spec.json'))));
+app.use('/swagger-docs', swaggerUi.serve, swaggerUi.setup(require('./swagger-spec.json')));
 app.get('/', (req, res) => res.status(301).redirect(process.env.DOC_URL));
 
 require('mongoose').connect(process.env.MONGO_URL, {

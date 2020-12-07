@@ -1,21 +1,3 @@
-/**
- * @swagger
- *  components:
- *    securitySchemas:
- *      bearerAuth:
- *        type: http
- *        scheme: bearer
- *        bearerFormat: JWT
- *    parameters:
- *      authParam:
- *        in: header
- *        name: Authorization
- *        required: true
- *        schema:
- *          type: string
- *        example: bearer <JSONWebToken>
- */
-
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
