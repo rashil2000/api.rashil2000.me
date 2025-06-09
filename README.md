@@ -1,6 +1,7 @@
 # Personal Website Backend
 
-## [api.rashil2000.me](https://api.rashil2000.me/)
+> [!NOTE]
+> This application is no longer in use. All of the functionality of this backend has been moved to server components in the [Next.js frontend](https://github.com/rashil2000/rashil2000.me/). 
 
 ### A complete content management backend for personal blogs and projects
 
